@@ -1,2 +1,2 @@
 # KING
-JS framework developed by Zhenjun
+JS framework developed by Wang, Zhenjun
