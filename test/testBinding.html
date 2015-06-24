@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test king.js data binding</title>
+    <script type="text/javascript" src="../src/king.js"></script>
+    <script type="text/javascript" src="testBinding.js"></script>
+</head>
+<body>
+    Test king.js data binding.
+    <br />
+    <div king-bind-model="test.Person">
+        <input type="text" king-bind-value="name" />
+        <input type="text" king-bind-value="age" />
+        <input type="button" king-bind-click="growUp" value="Grow Up" />
+    </div>
+
+    <div king-bind-model="test.Person" king-bind-init="init">
+        <input type="text" king-bind-value="name" />
+        <input type="text" king-bind-value="age" />
+        <input type="button" king-bind-click="growUp" value="Grow Up" />
+    </div>
+</body>
+</html>
