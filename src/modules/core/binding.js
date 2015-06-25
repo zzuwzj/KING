@@ -33,8 +33,8 @@ king.define("DataBinding", [], function () {
   function parseElement(element, model) {
     var vm = model;
 
-    if (element.getAttribute("king-model")) {
-      vm = bindModel(element.getAttribute("king-model"));
+    if (element.getAttribute("king-bind-model")) {
+      vm = bindModel(element.getAttribute("king-bind-model"));
     }
 
     var i;
@@ -43,7 +43,17 @@ king.define("DataBinding", [], function () {
     }
 
     for (i = 0; i < element.children.length; i++) {
-      parseElement(element, element.children[i], vm);
+      parseElement(element.children[i], vm);
+    }
+
+    if (model !== vm) {
+      for (var key in vm.$watchers) {
+        vm[key] = vm.$watchers[key].value;
+      }
+
+      if (vm.$initializer) {
+        vm.$initializer();
+      }
     }
   }
 
@@ -87,7 +97,8 @@ king.define("DataBinding", [], function () {
     king.log("binding model: " + name);
 
     var model = king.use(name);
-    var instance = new model().extend(Binder);
+    var instance = new model();
+    Object.extend(instance, Binder);
     // !!! cannot put the $watchers in Binder, here is just shallow copy, 
     // all instances will share one if put inside Binder
     instance.$watchers = {};
@@ -170,7 +181,7 @@ king.define("DataBinding", [], function () {
           type: "modelchange"
         });
       }
-    })
+    })(model);
   }
 
   function bindClick(element, key, model) {
