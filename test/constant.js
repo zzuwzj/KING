@@ -2,6 +2,8 @@
 
 //  (c) 2015    Wang, Zhenjun
 
-king.define("constant.PI", [], function () {
-  return 3.14159;
+king.define("constant", [], function() {
+  return {
+    PI: 3.14159
+  }
 });

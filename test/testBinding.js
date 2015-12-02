@@ -2,7 +2,7 @@
 
 //  (c) 2015    Wang, Zhenjun
 
-king.define("test.Person", [], function () {
+define("test.Person", [], function () {
   function Person() {
     this.name = 'Apple';
     this.age = 18;

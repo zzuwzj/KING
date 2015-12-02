@@ -1,5 +1,5 @@
 /*global king */
-king.define("DataBinding", [], function () {
+king.define("core.binding", [], function () {
   var Binder = {
     $watch: function (key, watcher) {
       if (!this.$watchers[key]) {
