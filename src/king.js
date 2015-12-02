@@ -2,15 +2,15 @@
 
 //  (c) 2015    Wang, Zhenjun
 
+var define, require, use;
 (function () {
   var moduleMap = {};
   var fileMap = {};
 
   var noop = function () {};
 
-  var king = function () {
+  var king = function () {};
 
-  };
   var core = {
     define: function (name, dependencies, factory) {
       if (!moduleMap[name]) {
@@ -138,6 +138,9 @@
   });
 
   window.king = king;
+  define = king.define;
+  require = king.require;
+  use = king.use;
 
   king.on("ready", function () {
     king.require(["../src/modules/core/binding"], function () {

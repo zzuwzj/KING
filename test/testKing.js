@@ -2,14 +2,14 @@
 
 //  (c) 2015    Wang, Zhenjun
 
-king.require(["constant"], function () {
+require(["constant"], function () {
   alert("require contant.js done.");
   var ShapeFactory = king.use("ShapeFactory");
   alert(ShapeFactory.getShape("CIRCLE", 5).area());
   alert(ShapeFactory.getShape("RECTANGLE", 3, 4).area());
 });
 
-king.define("shape.Circle", ["constant.PI"], function (pi) {
+define("shape.Circle", ["constant.PI"], function (pi) {
   var Circle = function (r) {
     this.r = r;
   };
@@ -23,7 +23,7 @@ king.define("shape.Circle", ["constant.PI"], function (pi) {
   return Circle;
 });
 
-king.define("shape.Rectangle", [], function () {
+define("shape.Rectangle", [], function () {
   var Rectangle = function (l, w) {
     this.length = l;
     this.width = w;
@@ -38,14 +38,14 @@ king.define("shape.Rectangle", [], function () {
   return Rectangle;
 });
 
-king.define("ShapeTypes", ["shape.Circle", "shape.Rectangle"], function (circle, rectangel) {
+define("ShapeTypes", ["shape.Circle", "shape.Rectangle"], function (circle, rectangel) {
   return {
     CIRCLE: circle,
     RECTANGLE: rectangel
   };
 });
 
-king.define("ShapeFactory", ["ShapeTypes"], function (shapeTypes) {
+define("ShapeFactory", ["ShapeTypes"], function (shapeTypes) {
   return {
     getShape: function (type) {
       var shape;
