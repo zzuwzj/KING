@@ -20,6 +20,13 @@ var define, require, use;
           factory: factory
         };
         moduleMap[name] = module;
+
+        // loop handle deps
+        for (var i = 0; i < dependencies.length; i++) {
+          if (!moduleMap[dependencies[i]]) {
+            require([dependencies[i]]);
+          }
+        }
       }
       return moduleMap[name];
     },
@@ -46,6 +53,7 @@ var define, require, use;
     require: function (pathArr, callback) {
       for (var i = 0; i < pathArr.length; i++) {
         var path = pathArr[i];
+        path = path.replace(/\./g, '/');
 
         if (!fileMap[path]) {
           var head = document.getElementsByTagName('head')[0];
