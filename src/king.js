@@ -6,6 +6,7 @@ var define, require, use;
 (function() {
   var moduleMap = {};
   var fileMap = {};
+  var moduleFilePath = {};
 
   var noop = function() {};
 
@@ -22,13 +23,13 @@ var define, require, use;
         moduleMap[name] = module;
 
         // loop handle deps
-        var pathArr = [];
-        for (var i = 0; i < dependencies.length; i++) {
-          if (!fileMap[dependencies[i]]) {
-            pathArr.push(dependencies[i]);
-          }
-        }
-        require(pathArr, function () {});
+        // var pathArr = [];
+        // for (var i = 0; i < dependencies.length; i++) {
+        //   if (!fileMap[dependencies[i]]) {
+        //     pathArr.push(dependencies[i]);
+        //   }
+        // }
+        // require(pathArr, function () {});
       }
       return moduleMap[name];
     },
@@ -39,10 +40,19 @@ var define, require, use;
       if (!module.entity) {
         var args = [];
         for (var i = 0; i < module.dependencies.length; i++) {
-          if (moduleMap[module.dependencies[i]].entity) {
-            args.push(moduleMap[module.dependencies[i]].entity);
+          var mod = module.dependencies[i];
+          if (!moduleMap[mod]) {
+            if (!moduleFilePath[mod]) {
+              var filePath = './' + mod.replace(/\./g, '/');
+              require_sync(filePath);
+              args.push(this.use(mod));
+            }
           } else {
-            args.push(this.use(module.dependencies[i]));
+            if (moduleMap[mod].entity) {
+              args.push(moduleMap[mod].entity);
+            } else {
+              args.push(this.use(mod));
+            }
           }
         }
 
@@ -55,7 +65,6 @@ var define, require, use;
     require: function(pathArr, callback) {
       for (var i = 0; i < pathArr.length; i++) {
         var path = pathArr[i];
-        path = path.replace(/\./g, '/');
 
         if (!fileMap[path]) {
           var head = document.getElementsByTagName('head')[0];
@@ -82,9 +91,18 @@ var define, require, use;
         }
 
         if (allLoaded && typeof callback === 'function') {
-           callback();
+          callback();
         }
       }
+    },
+
+    require_sync: function(filePath) {
+      var head = document.getElementsByTagName('head')[0];
+      var node = document.createElement('script');
+      node.type = 'text/javascript';
+      node.async = 'false';
+      node.src = filePath + '.js';
+      head.appendChild(node);
     },
 
     error: function() {
@@ -145,6 +163,7 @@ var define, require, use;
   window.king = king;
   define = king.define;
   require = king.require;
+  require_sync = king.require_sync;
   use = king.use;
 
   //Events
@@ -153,7 +172,7 @@ var define, require, use;
   });
 
   king.on("ready", function() {
-    king.require(["core.binding"], function() {
+    king.require(["./core/binding"], function() {
       var binding = king.use("core.binding");
       binding.parse(document.body);
     });
