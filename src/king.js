@@ -3,17 +3,17 @@
 //  (c) 2015    Wang, Zhenjun
 
 var define, require, use;
-(function() {
+(function () {
   var moduleMap = {};
   var fileMap = {};
   var moduleFilePath = {};
 
-  var noop = function() {};
+  var noop = function () {};
 
-  var king = function() {};
+  var king = function () {};
 
   var core = {
-    define: function(name, dependencies, factory) {
+    define: function (name, dependencies, factory) {
       if (!moduleMap[name]) {
         var module = {
           name: name,
@@ -34,7 +34,7 @@ var define, require, use;
       return moduleMap[name];
     },
 
-    use: function(name) {
+    use: function (name) {
       var module = moduleMap[name];
 
       if (!module.entity) {
@@ -62,7 +62,7 @@ var define, require, use;
       return module.entity;
     },
 
-    require: function(pathArr, callback) {
+    require: function (pathArr, callback) {
       for (var i = 0; i < pathArr.length; i++) {
         var path = pathArr[i];
 
@@ -72,7 +72,7 @@ var define, require, use;
           node.type = 'text/javascript';
           node.async = 'true';
           node.src = path + '.js';
-          node.onload = function() {
+          node.onload = function () {
             fileMap[path] = true;
             head.removeChild(node);
             checkAllFiles();
@@ -96,7 +96,7 @@ var define, require, use;
       }
     },
 
-    require_sync: function(filePath) {
+    require_sync: function (filePath) {
       var head = document.getElementsByTagName('head')[0];
       var node = document.createElement('script');
       node.type = 'text/javascript';
@@ -105,11 +105,11 @@ var define, require, use;
       head.appendChild(node);
     },
 
-    error: function() {
+    error: function () {
 
     },
 
-    log: function(obj) {
+    log: function (obj) {
       try {
         console.log(obj);
       } catch (ex) {
@@ -119,7 +119,7 @@ var define, require, use;
   };
 
   var Events = {
-    on: function(eventType, handler) {
+    on: function (eventType, handler) {
       if (!this.eventMap) {
         this.eventMap = {};
       }
@@ -131,7 +131,7 @@ var define, require, use;
       this.eventMap[eventType].push(handler);
     },
 
-    off: function(eventType, handler) {
+    off: function (eventType, handler) {
       for (var i = 0; i < this.eventMap[eventType].length; i++) {
         if (this.eventMap[eventType][i] === handler) {
           this.eventMap[eventType].splice(i, 1);
@@ -140,7 +140,7 @@ var define, require, use;
       };
     },
 
-    fire: function(event) {
+    fire: function (event) {
       var eventType = event.type;
       if (this.eventMap && this.eventMap[eventType]) {
         for (var i = 0; i < this.eventMap[eventType].length; i++) {
@@ -150,7 +150,7 @@ var define, require, use;
     }
   };
 
-  Object.extend = function(destination, source) {
+  Object.extend = function (destination, source) {
     for (var property in source) {
       destination[property] = source[property];
     }
@@ -167,12 +167,12 @@ var define, require, use;
   use = king.use;
 
   //Events
-  king.define("Events", [], function() {
+  king.define("Events", [], function () {
     return Events;
   });
 
-  king.on("ready", function() {
-    king.require(["./core/binding"], function() {
+  king.on("ready", function () {
+    king.require(["./core/binding"], function () {
       var binding = king.use("core.binding");
       binding.parse(document.body);
     });
