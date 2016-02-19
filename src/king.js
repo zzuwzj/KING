@@ -62,7 +62,15 @@ var define, require, use;
       return module.entity;
     },
 
+    /*
+     * load js file
+     * params: 
+     *    pathArr: js file path(s)
+     *    callback: callback function after all js files loaded
+     *
+     */
     require: function (pathArr, callback) {
+      pathArr = [].concat(pathArr);
       for (var i = 0; i < pathArr.length; i++) {
         var path = pathArr[i];
 
@@ -172,7 +180,7 @@ var define, require, use;
   });
 
   king.on("ready", function () {
-    king.require(["./core/binding"], function () {
+    king.require("./core/binding", function () {
       var binding = king.use("core.binding");
       binding.parse(document.body);
     });
