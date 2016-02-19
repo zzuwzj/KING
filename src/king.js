@@ -104,6 +104,12 @@ var define, require, use;
       }
     },
 
+    /*
+     * load js file synchronized
+     * params: 
+     *    filepath: js file path
+     *
+     */
     require_sync: function (filePath) {
       var head = document.getElementsByTagName('head')[0];
       var node = document.createElement('script');
